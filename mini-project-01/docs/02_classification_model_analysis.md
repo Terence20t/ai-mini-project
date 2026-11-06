@@ -26,7 +26,7 @@ DummyClassifier의 높은 Accuracy는 다수 클래스인 미구매 데이터에
 - **학습 조건:** 최대 25 epoch, batch size 256, learning rate 0.001
 - **Validation F1이 가장 높았던 에포크:** 25
 - **선택된 MLP-A의 Train F1 / Validation F1:** 0.709 / 0.633
-- **MLP-A Validation Precision / Recall:** ___ / ___
+- **MLP-A Validation Precision / Recall:** 0.717 / 0.566
 
 **분석:** Train loss와 Train·Validation F1 그래프에서 확인한 학습 경향을 작성합니다.  
 Train loss는 epoch 4이전은 급격히 하락했고, 이후부터 경사가 완만해지기 시작했으며, F1 그래프에서는 epoch 4 이전은 급격시 상승했으나, 이후부터는 완만함
@@ -34,16 +34,16 @@ Train loss는 epoch 4이전은 급격히 하락했고, 이후부터 경사가 �
 ## 3. 클래스 가중 손실과 MLP 비교 (CP-06)
 
 - **MLP-B 변경 사항:** 양성 클래스 가중치(`pos_weight`)를 적용한 `BCEWithLogitsLoss`
-- **Train 데이터의 `pos_weight`(미구매 수 ÷ 구매 수):** ___
-- **MLP-B의 최적 에포크:** ___
-- **MLP-B Train F1 / Validation F1:** ___ / ___
-- **MLP-B Validation Precision / Recall:** ___ / ___
-- **MLP-A와 MLP-B의 Validation F1 차이:** ___
-- **LogisticRegression과 두 MLP의 성능 비교에서 발견한 점:** ___
-- **Train·Validation F1 차이에서 관찰한 점:** ___
+- **Train 데이터의 `pos_weight`(미구매 수 ÷ 구매 수):** Train 불균형 비율(neg/pos): 5.46
+- **MLP-B의 최적 에포크:** 17
+- **MLP-B Train F1 / Validation F1:** 0.692 / 0.645
+- **MLP-B Validation Precision / Recall:** 0.575 / 0.734
+- **MLP-A와 MLP-B의 Validation F1 차이:** A - B = 0.633 - 0.645 = - 0.0121
+- **LogisticRegression과 두 MLP의 성능 비교에서 발견한 점:** LogisticRegression의 Validation F1은 0.490으로 MLP-A(0.633)와 MLP-B(0.645)보다 낮았다. MLP 모델이 구매 여부를 예측하는 데 더 높은 성능을 보였으며, 특히 클래스 가중치를 적용한 MLP-B가 가장 높은 F1-score를 기록하였다.
+- **Train·Validation F1 차이에서 관찰한 점:** MLP-B의 Train F1은 0.692, Validation F1은 0.645로 차이는 0.047이다. 두 데이터의 성능 차이가 비교적 크지 않아 심각한 과적합 징후는 두드러지지 않는 것으로 판단된다.
 
 **분석:** 양성 클래스 가중치를 적용한 뒤 Precision·Recall·F1이 어떻게 달라졌는지 작성합니다.  
-___
+양성 클래스 가중치를 적용한 결과 구매 클래스의 Recall이 높아져 실제 구매 고객을 더 많이 찾아낼 수 있게 되었다. 반면 Precision은 낮아져 실제로 구매하지 않을 고객을 구매한다고 잘못 예측하는 경우가 증가하였다. 그러나 Precision과 Recall의 균형을 나타내는 F1-score는 0.633에서 0.645로 상승하였다. 따라서 클래스 가중치 적용이 구매 고객 탐지 성능 개선에 긍정적인 효과를 보였다고 판단할 수 있다.
 
 > 전체 실험 결과는 Notebook의 `results_df`와 `results/02_model_comparison.csv`를 참고합니다.
 
