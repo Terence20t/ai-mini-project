@@ -10,26 +10,26 @@
 - **양성 클래스:** 구매 (`Revenue=1`)
 - **주 평가 지표:** F1 (구매 클래스)
 - **보조 지표:** Precision, Recall, Accuracy
-- **모델 비교에 사용한 데이터:** ___
-- **DummyClassifier — Validation Accuracy / F1:** ___ / ___
-- **LogisticRegression — Train F1 / Validation F1:** ___ / ___
-- **LogisticRegression — Validation Precision / Recall:** ___ / ___
-- **LogisticRegression의 Validation 혼동행렬:** TN ___ / FP ___ / FN ___ / TP ___
+- **모델 비교에 사용한 데이터:** 훈련데이터
+- **DummyClassifier — Validation Accuracy / F1:** 0.845 / 0.00
+- **LogisticRegression — Train F1 / Validation F1:** 0.505 / 0.49
+- **LogisticRegression — Validation Precision / Recall:** 0.734 / 0.367
+- **LogisticRegression의 Validation 혼동행렬:** TN 1526 / FP 38 / FN 181 / TP 105
 
 **분석:** 불균형 데이터에서 기준 모델의 Accuracy와 F1이 다르게 나타나는 이유를 작성합니다.  
-___
+DummyClassifier의 높은 Accuracy는 다수 클래스인 미구매 데이터에 편중된 결과이며, 구매 예측 성능을 평가하기 위해서는 구매 클래스의 F1-score를 주 평가 지표로 사용하는 것이 적절하다.
 
 ## 2. PyTorch MLP-A 구현 및 학습 (CP-05)
 
 - **신경망 구조:** 입력 → 64 → 32 → 1 (ReLU, Dropout 0.1)
 - **손실 함수 / 옵티마이저:** `BCEWithLogitsLoss` / Adam
 - **학습 조건:** 최대 25 epoch, batch size 256, learning rate 0.001
-- **Validation F1이 가장 높았던 에포크:** ___
-- **선택된 MLP-A의 Train F1 / Validation F1:** ___ / ___
+- **Validation F1이 가장 높았던 에포크:** 25
+- **선택된 MLP-A의 Train F1 / Validation F1:** 0.709 / 0.633
 - **MLP-A Validation Precision / Recall:** ___ / ___
 
 **분석:** Train loss와 Train·Validation F1 그래프에서 확인한 학습 경향을 작성합니다.  
-___
+Train loss는 epoch 4이전은 급격히 하락했고, 이후부터 경사가 완만해지기 시작했으며, F1 그래프에서는 epoch 4 이전은 급격시 상승했으나, 이후부터는 완만함
 
 ## 3. 클래스 가중 손실과 MLP 비교 (CP-06)
 
