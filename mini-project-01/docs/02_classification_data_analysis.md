@@ -30,35 +30,41 @@ ___
 
 ## 3. 구매 여부와 관련된 특성 분석 (CP-02)
 
-- **방문자 유형(`VisitorType`)별 구매율:** Returning_Visitor ___ / New_Visitor ___ / Other ___
-- **구매율이 가장 높은 방문자 유형:** ___
-- **구매·미구매 세션의 `ProductRelated` 중앙값:** ___ / ___
-- **구매·미구매 세션의 `ProductRelated_Duration` 중앙값:** ___ / ___
-- **구매·미구매 세션의 `PageValues` 중앙값:** ___ / ___
-- **구매·미구매 세션의 `ExitRates` 중앙값:** ___ / ___
-- **특성 분석을 Train 데이터에서 수행한 이유:** ___
+- **방문자 유형(`VisitorType`)별 구매율:** Returning_Visitor 13.95 % / New_Visitor 25.2 % / Other 15.9 %
+- **구매율이 가장 높은 방문자 유형:** New_Visitor
+- **구매·미구매 세션의 `ProductRelated` 중앙값:** 29 / 16
+- **구매·미구매 세션의 `ProductRelated_Duration` 중앙값:** 1069.658 / 517.580
+- **구매·미구매 세션의 `PageValues` 중앙값:** 17.543 / 0.000
+- **구매·미구매 세션의 `ExitRates` 중앙값:** 0.015 / 0.029
+- **특성 분석을 Train 데이터에서 수행한 이유:** 모델이 아직 접하지 않은 Validation과 Test 데이터의 정보를 학습 및 분석 과정에서 미리 사용하지 않기 위해서입니다.
 
 **분석:** 구매 여부와 관련된 특성에서 관찰한 점과 `PageValues`의 예측 시점상 한계를 작성합니다.  
 ___
 
 ## 4. 데이터 전처리 및 PyTorch 입력 준비 (CP-03)
 
-- **범주형 특성(One-Hot 인코딩):** ___
-- **수치형 특성(표준화):** ___
-- **이진 특성(변환 없이 사용):** ___
-- **숫자로 표현된 코드값(`OperatingSystems`, `Browser` 등)을 범주형으로 처리한 이유:** ___
-- **`handle_unknown="ignore"`를 설정한 이유:** ___
-- **Train 전처리 전후 Shape:** ___ → ___
-- **Validation에 적용한 변환 기준:** ___
-- **PyTorch 입력·타깃 Tensor의 자료형 및 Shape:** ___
-- **`DataLoader` 배치 크기와 배치 수:** ___ / ___
+- **범주형 특성(One-Hot 인코딩):** "Month", "OperatingSystems", "Browser", "Region", "TrafficType", "VisitorType"
+- **수치형 특성(표준화):** "Administrative", "Administrative_Duration", "Informational", "Informational_Duration", "ProductRelated",
+"ProductRelated_Duration", "BounceRates", "ExitRates", "PageValues", "SpecialDay"
+- **이진 특성(변환 없이 사용):** "Weekend"
+- **숫자로 표현된 코드값(`OperatingSystems`, `Browser` 등)을 범주형으로 처리한 이유:** 숫자 자체의 크기나 순서가 실제 의미를 나타내지 않고, 분류를 구분하기 때문입니다.
+- **`handle_unknown="ignore"`를 설정한 이유:** Train 데이터에서 학습하지 못한 새로운 범주가 Validation 또는 Test 데이터에 등장하더라도 오류 없이 처리하기 위해서입니다.
+- **Train 전처리 전후 Shape:** (8630, 17) → (8630, 73)
+- **Validation에 적용한 변환 기준:** Train 전처리기준
+- **PyTorch 입력·타깃 Tensor의 자료형 및 Shape:** 
+  자료형: torch.float32 torch.float32
+  Shape: Tensor: torch.Size([8630, 73]) torch.Size([8630, 1])
+dtype: torch.float32 torch.float32
+Mini-batches: 34
+- **`DataLoader` 배치 크기와 배치 수:** 256 / 34
 
 **분석:** 신경망 입력을 `float32` Tensor로 준비하고 미니배치를 만드는 이유를 1~2문장으로 작성합니다.  
-___
+신경망 모델은 행렬 연산을 수행하므로 입력 데이터를 PyTorch에서 효율적으로 처리할 수 있는 float32 Tensor로 준비하고,
+또한 미니배치(Mini-batch) 학습을 통해 데이터를 일정 크기로 나누어 학습함으로써  학습 효율성을 높이기 위함.
 
 ## 5. 데이터 분석 요약
 
 **모델 학습 전에 확인한 중요한 점 1~2가지:**  
-___
+구매여부는 class 불균형데이터로 계층화 분할하였으며, 신경망모델학습을 위해 Tensor 데이터유형으로 준비함.
 
 > 불균형 데이터에서 **어떤 지표를 우선할지**는 `adr.md`의 의사결정 ③에 작성합니다.
