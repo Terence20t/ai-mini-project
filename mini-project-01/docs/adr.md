@@ -18,7 +18,7 @@
 
 - **검토한 선택지:**  `casual`·`registered` 제외
 - **최종 선택(사용·제외한 특성):** `casual`·`registered` 제외
-- **선택 근거(누수 확인, 예측 시점, 상관관계 등):** ___
+- **선택 근거(누수 확인, 예측 시점, 상관관계 등):** temp, hum, windspeed는 cnt와 atemp는 temp와 상관관계가 높음
 - **감수한 한계 또는 추후 확인할 점:** ___
 
 **분석 근거:** `01_regression_data_analysis.md`
@@ -29,7 +29,7 @@
 
 서로 다른 회귀 모델 및 설정 중 하나를 최종 모델로 선택해야 합니다.
 
-- **비교한 모델·설정:** randomForest(ㅁ), randomForest(B)
+- **비교한 모델·설정:** randomForest(A), randomForest(B)
 - **최종 선택한 모델·설정:** randomForest(A)
 - **선택 근거(Validation MAE, 과대적합 가능성, 시간대별 오류 등):** 예측 MAE가 가장작음
 - **선택 모델의 장점:** 예측MAE가 가장작고 안정정
@@ -47,10 +47,12 @@
 
 구매 세션이 전체의 약 15%뿐인 불균형 데이터이므로, Accuracy만으로 구매 클래스를 얼마나 잘 예측하는지 판단하기 어렵습니다.
 
-- **검토한 선택지:** ___ (예: Accuracy, 구매 클래스 F1, Precision, Recall)
-- **최종 선택한 주 지표와 보조 지표:** ___
-- **선택 근거(DummyClassifier와 LogisticRegression 결과, FP·FN 등):** ___
+- **검토한 선택지:** Accuracy, 구매 클래스 F1, Precision, Recall
+  
+- **최종 선택한 주 지표와 보조 지표:** 주: F1, 보조: Precision, Recall
+- **선택 근거(DummyClassifier와 LogisticRegression 결과, FP·FN 등):** Train·Validation 결과를 비교하면 LogisticRegression이 DummyClassifier보다 구매 고객을 예측하는 능력이 개선되었음을 확인할 수 있으며, 혼동행렬을 보면 실제 구매 고객 286명 중 105명을 정확하게 예측하였으며(TP), 181명은 미구매로 잘못 예측하였다(FN). 또한 실제 미구매 고객 1,564명 중 38명을 구매로 잘못 예측하였다(FP). 따라서 구매 고객 탐지 능력과 잘못된 구매 예측을 함께 고려할 수 있는 F1-score를 주 지표로 선정하였다
 - **감수한 한계 또는 추후 확인할 점:** ___
+LogisticRegression은 실제 구매 고객의 약 36.7%만 찾아내고 있어 미탐지(FN)가 많다는 한계가 있다. 향후 예측 임계값 조정, 클래스 가중치 적용 등을 통해 Recall과 F1-score를 개선할 필요가 있다. 또한 Test 데이터에서 최종 일반화 성능을 확인해야 한다.
 
 **분석 근거:** `02_classification_data_analysis.md`, `02_classification_model_analysis.md`
 
