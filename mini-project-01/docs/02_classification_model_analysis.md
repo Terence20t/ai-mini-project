@@ -66,22 +66,26 @@ Train loss는 epoch 4이전은 급격히 하락했고, 이후부터 경사가 �
 
 ## 5. 최종 신경망과 Test 평가 (CP-08)
 
-- **Test 확인 전에 확정한 MLP 설정 / 임계값:** ___ / ___
-- **최종 재학습 데이터(Train + Validation):** ___행
-- **최종 재학습 에포크 수 / 가중 손실 적용 여부:** ___ / ___
-- **Test Accuracy / Precision / Recall / F1:** ___ / ___ / ___ / ___
-- **Test 혼동행렬:** TN ___ / FP ___ / FN ___ / TP ___
-- **모델 번들(`02_final_classifier.joblib`)·설정 JSON 저장 및 재로딩 확인:** ___
-- **`predict_purchase()` 실행 결과:** ___
+- **Test 확인 전에 확정한 MLP 설정 / 임계값:** MLP-B (weighted BCE) / 임계값: 0.5
+- **최종 재학습 데이터(Train + Validation):** 10480 행 / 최종 epoch: 17
+- **최종 재학습 에포크 수 / 가중 손실 적용 여부:** 17 / 적용
+- **Test Accuracy / Precision / Recall / F1:** 0.859 / 0.527 / 0.843 / 0.843
+- **Test 혼동행렬:** TN 1348 / FP 216 / FN 45 / TP 241
+- **모델 번들(`02_final_classifier.joblib`)·설정 JSON 저장 및 재로딩 확인:** 저장한 결과 파일:
+- 02_final_classifier.joblib
+- 02_model_comparison.csv
+- 02_model_config.json
+- 02_threshold_comparison.csv
+- **`predict_purchase()` 실행 결과:** 0 ({'purchase_probability': 0.0058, 'prediction': 0, 'threshold': 0.5})
 
 **해석:** 최종 Test 결과와 동일한 모델·임계값의 Validation 결과를 비교해 알게 된 점을 작성합니다.  
-___
+최종 Test 결과 Accuracy는 0.859, Precision은 0.527, Recall과 F1은 0.843으로 나타났다. Test F1이 Validation F1보다 높게 나타났지만, 이는 데이터 분할에 따른 차이일 수 있으므로 Test 결과만으로 모델의 일반화 성능이 항상 더 높다고 판단할 수는 없다.
 
 > Test 결과는 모델 선택에 사용하지 않습니다. 최종 Test 수치는 Notebook과 이 문서에만 기록합니다.
 
 ## 6. 실험 요약
 
-- **가장 중요한 실험 결과:** ___
-- **남아 있는 모델의 한계:** ___
+- **가장 중요한 실험 결과:**  Test F1이 Validation F1보다 높게 나타났지만, 이는 데이터 분할에 따른 차이일 수 있으므로 Test 결과만으로 모델의 일반화 성능이 항상 더 높다고 판단할 수는 없다.
+- **남아 있는 모델의 한계:** Precision이 0.527로 상대적으로 낮아 구매로 예측한 세션 중 실제 미구매 세션도 상당수 존재한다. 또한 특정 데이터 분할에서 얻은 성능이므로 다른 기간이나 새로운 고객 데이터에서도 동일한 성능이 유지되는지는 추가 검증이 필요하다.
 
 > **최종 MLP 설정·임계값의 선택과 근거**는 `adr.md`의 의사결정 ④에 작성합니다.

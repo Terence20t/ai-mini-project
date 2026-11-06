@@ -63,9 +63,9 @@ LogisticRegression은 실제 구매 고객의 약 36.7%만 찾아내고 있어 �
 기본 손실 함수로 학습한 MLP-A와 클래스 가중 손실을 적용한 MLP-B를 비교하고, 구매 확률을 0/1로 구분하는 임계값(0.3·0.5·0.7)을 선택해야 합니다.
 
 - **검토한 선택지:** ___ (MLP-A / MLP-B의 학습 결과, 임계값 0.3·0.5·0.7)
-- **최종 선택한 MLP 설정·임계값·재학습 에포크:** ___
-- **선택 근거(Validation F1, Precision·Recall, FP·FN 및 가중 손실의 영향):** ___
-- **LogisticRegression과 비교했을 때 선택한 MLP의 특징:** ___
-- **감수한 한계 또는 추후 개선 방향:** ___
+- **최종 선택한 MLP 설정·임계값·재학습 에포크:** MLP-B (weighted BCE), 임계값: 0.5, epoch: 17
+- **선택 근거(Validation F1, Precision·Recall, FP·FN 및 가중 손실의 영향):** MLP-B는 Validation F1 0.645로 MLP-A의 0.633보다 높았다. Validation Precision은 0.575, Recall은 0.734로 나타났다. 기본 임계값 0.5에서 MLP-B는 MLP-A보다 FP가 91건 증가했지만 FN은 48건 감소하여 실제 구매 고객을 더 많이 찾아냈다. 또한 양성 클래스 가중치(pos_weight=5.46)를 적용함으로써 소수 클래스인 구매 데이터의 학습 비중을 높이고 구매 고객 탐지 성능을 개선하였다. 임계값 0.3과 0.7도 비교했으나 Precision과 Recall 사이의 균형 및 Validation F1을 고려하여 0.5를 최종 선택하였다.
+- **LogisticRegression과 비교했을 때 선택한 MLP의 특징:** LogisticRegression의 Validation F1은 0.490인 반면 MLP-B는 0.645로 더 높은 성능을 보였다. MLP는 여러 은닉층과 ReLU 활성화 함수를 통해 특성 간 복잡한 비선형 관계를 학습할 수 있으며, 클래스 가중치를 적용하여 불균형 데이터의 구매 클래스 탐지 성능을 개선할 수 있었다.
+- **감수한 한계 또는 추후 개선 방향:** MLP-B는 Recall이 높은 대신 Precision이 0.575로 상대적으로 낮아 실제 미구매 고객을 구매로 잘못 예측하는 FP가 증가하는 한계가 있다. 향후 다양한 임계값 실험, PR 곡선 분석, 클래스 가중치 조정 및 하이퍼파라미터 튜닝을 통해 Precision과 Recall의 균형을 개선할 필요가 있다. 또한 다른 기간의 데이터에서도 성능이 유지되는지 추가 검증할 필요가 있다.
 
 **분석 근거:** `02_classification_model_analysis.md`
