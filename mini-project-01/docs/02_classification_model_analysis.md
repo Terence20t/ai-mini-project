@@ -50,16 +50,17 @@ Train loss는 epoch 4이전은 급격히 하락했고, 이후부터 경사가 �
 ## 4. 예측 오류 및 임계값 분석 (CP-07)
 
 - **비교한 두 신경망:** MLP-A / MLP-B
-- **기본 임계값 0.5에서 MLP-A의 FP / FN:** ___ / ___
-- **기본 임계값 0.5에서 MLP-B의 FP / FN:** ___ / ___
-- **임계값 0.3에서 Precision·Recall 및 FP·FN 변화:** ___
-- **임계값 0.7에서 Precision·Recall 및 FP·FN 변화:** ___
-- **Validation F1이 가장 높은 MLP·임계값 조합:** ___
-- **선택한 MLP의 최적 에포크 수:** ___
+- **기본 임계값 0.5에서 MLP-A의 FP / FN:** 64 / 124
+- **기본 임계값 0.5에서 MLP-B의 FP / FN:** 155 / 76
+- **임계값 0.3에서 Precision·Recall 및 FP·FN 변화:** Precision 0.109 감소, Recall 0.112 증가 및 FP 61증가, FN 32 감소
+- **임계값 0.7에서 Precision·Recall 및 FP·FN 변화:** Precision 0.118 증가, Recall 0.113 감소 및 FP 44 감소, FN 61 증가
+- **Validation F1이 가장 높은 MLP·임계값 조합:** MLP-B (weighted BCE), 임계값 0.5
+- **선택한 MLP의 최적 에포크 수:** 17
 - **(선택) PR 곡선 또는 추가 임계값 실험에서 확인한 점:** ___
 
 **분석:** 모델과 임계값의 선택에서 Precision·Recall 및 FP·FN을 어떻게 고려했는지 작성합니다.  
-___
+구매 고객 탐지 능력과 Precision·Recall의 균형을 고려하여 Validation F1이 가장 높은 MLP-B와 임계값 0.5를 선택하였다. 최적 에포크는 17로 설정하여 최종 모델 재학습에 활용한다.
+임계값을 0.3으로 낮추면 Recall이 증가하고 FN이 감소하여 구매 고객 탐지에 유리하지만, FP 증가와 Precision 감소라는 단점이 발생한다. 반대로 임계값을 0.7로 높이면 Precision이 증가하고 FP가 감소하지만, FN이 증가하여 실제 구매 고객을 놓치는 경우가 많아진다.
 
 > 임계값별 상세 결과는 `threshold_df`와 `results/02_threshold_comparison.csv`를 참고합니다.
 
