@@ -16,9 +16,9 @@
 
 예측 시점에 사용할 수 없거나 누수가 발생할 수 있는 특성이 있습니다.
 
-- **검토한 선택지:**  `casual`·`registered` 제외
-- **최종 선택(사용·제외한 특성):** `casual`·`registered` 제외
-- **선택 근거(누수 확인, 예측 시점, 상관관계 등):** temp, hum, windspeed는 cnt와 atemp는 temp와 상관관계가 높음
+- **검토한 선택지:**  `casual`·`registered` 포함여부, atemp 유지여부
+- **최종 선택(사용·제외한 특성):** `casual`·`registered` 제외 seanson, yr, mnth, hr, holiday, weekday, workingday, weathersit, temp, hum, windspeed 11개와 is_commiute_hour 추가
+- **선택 근거(누수 확인, 예측 시점, 상관관계 등):** casual + registered == cnt가 성립하여 두변수 제외, atemp는 temp와 상관관계가 0.992로 높아 제외.
 - **감수한 한계 또는 추후 확인할 점:** ___
 
 **분석 근거:** `01_regression_data_analysis.md`
@@ -29,11 +29,11 @@
 
 서로 다른 회귀 모델 및 설정 중 하나를 최종 모델로 선택해야 합니다.
 
-- **비교한 모델·설정:** randomForest(A), randomForest(B)
-- **최종 선택한 모델·설정:** randomForest(A)
-- **선택 근거(Validation MAE, 과대적합 가능성, 시간대별 오류 등):** 예측 MAE가 가장작음
-- **선택 모델의 장점:** 예측MAE가 가장작고 안정정
-- **남아 있는 한계 또는 개선 방향:** ___
+- **비교한 모델·설정:** randomForest_A(n_estimators=50, max_depth=10), randomForest_B(n_estimators=100, max_depth=15), DummyClassifier(mean), LinearRegression, DecisionTree(max_depth=15)
+- **최종 선택한 모델·설정:** randomForest(_A) -- n_estimators=50, max_depth=10, random_stat=42, n_jobs=-1
+- **선택 근거(Validation MAE, 과대적합 가능성, 시간대별 오류 등):** Validation MAE가 가장작음
+- **선택 모델의 장점:** Validation MAE가 가장작고 안정정
+- **남아 있는 한계 또는 개선 방향:** 시간순서에 따른 분포 차이와 피크 수요의 과소예측을 추가 검증할 필요가 있다.
 
 **분석 근거:** `01_regression_model_analysis.md`
 
