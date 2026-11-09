@@ -71,14 +71,13 @@ Jupyter Notebook을 열고 오른쪽 위 **Select Kernel → Python Environments
 
 ---
 
-# AI Mini Projects (수정 중)
+# AI Mini Projects
 
 AI 엔지니어 과정에서 진행하는 미니프로젝트의
 구현 과정과 실험 결과, 의사결정을 기록하는 저장소입니다.
 
 ## Mini Project 01
 
-- 진행 상태: 준비 중
 - 목표: AI 모델을 실험하고 결과를 분석하여
   적절한 방법을 선택하는 능력 기르기
 
